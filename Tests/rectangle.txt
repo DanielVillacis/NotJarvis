@@ -3,36 +3,70 @@
 !mute
 
 
-#Fonction de calcul de la valeur absolue
+#Debut du calcul de la valeur absolue d'un entier.
+# On compare les x1 et y1 avec x2 et y2 (parce que les coordonnees entrees ne representent pas un rectangle).
+!{.
+	!(y - x)
+}
+!ref yPlusGrand
+
+!{. 
+	!(x - y)
+}
+!ref xPlusGrand
 
 
+#Nouvel objet ifelse qui a pour membres les coordonnees en x: vrai = xPlusGrand et faux = yPlusGrand
+!(ifelse new xPlusGrand yPlusGrand)
+!ref calcPlusGrand
 
 
-#Fonction de création de la classe Rectangle
+#Fonction qui calcule la valeur absolue de la hauteur et largeur du rectangle (Selon ifelse.txt)
+!{ x y . 
+	!(x > y)
+	!ref valeurPlusGrande
+	
+	
+	#Rï¿½cupï¿½re l'atome boolï¿½en du rï¿½sultat (donc vrai ou faux)
+	!(valeurPlusGrande value)
+	!ref resVraiFaux
+	
+	#Va chercher le membre vrai ou le membre faux selon
+	#la valeur de l'atome boolï¿½en (il sert de sï¿½lecteur).
+	!(calcPlusGrand resVraiFaux)	
+}
+!ref valeurAbs
+
+
+#Fonction de crï¿½ation de la classe Rectangle
 !{.
 
-	#RECTANGLE : à modifier
+	#RECTANGLE : ï¿½ modifier
 	#fonction de calcul de la hauteur
 	!{.
 		!(self y1)
 		!ref y1
 		!(self y2)
-		!(!a - y1)
+		!a
+		y1
+		valeurAbs
 	}
 	!ref fonctionHauteur
 		
-	#RECTANGLE : à modifier
+	#RECTANGLE : ï¿½ modifier
 	#fonction de calcul de la largeur	
 	
 	!{.
 		!(self x1)
 		!ref x1
 		!(self x2)
-		!(!a - x1)
+		!a 
+		x1
+		valeurAbs
 	}
 	!ref fonctionLargeur	
 	
-	#fonction de calcul du périmètre
+	#fonction de calcul du pï¿½rimï¿½tre
 	
 	!{.
 		!(self hauteur)
@@ -46,18 +80,18 @@
 
 	#fonction de calcul de l'aire
 	
-	#définition des membres
+	#dï¿½finition des membres
 	("x1" "y1" "x2" "y2")
 	
-	#définition des méthodes
+	#dï¿½finition des mï¿½thodes
 	["hauteur" fonctionHauteur "largeur" fonctionLargeur "perimetre" fonctionPerimetre]
 	
-	#Définition de la classe
+	#Dï¿½finition de la classe
 	!(Class new)	
 }
 
 
-#interprète la fonction qu'on vient de créer.
+#interprï¿½te la fonction qu'on vient de crï¿½er.
 !a
 
 !ref Rectangle
