@@ -3,6 +3,8 @@
 !mute
 
 
+#Fonction de calcul de la valeur absolue
+
 
 
 
@@ -53,6 +55,8 @@
 	#Définition de la classe
 	!(Class new)	
 }
+
+
 #interprète la fonction qu'on vient de créer.
 !a
 
