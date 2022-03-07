@@ -20,6 +20,7 @@ import jarvis.atoms.NullAtom;
 import jarvis.atoms.ObjectAtom;
 import jarvis.atoms.StringAtom;
 import jarvis.atoms.primitives.OperatorNewPrimitive;
+import jarvis.atoms.primitives.OperatorSetPrimitive;
 import jarvis.atoms.primitives.booleans.BooleanPrimitiveAnd;
 import jarvis.atoms.primitives.booleans.BooleanPrimitiveNot;
 import jarvis.atoms.primitives.booleans.BooleanPrimitiveOr;
@@ -146,6 +147,9 @@ public class JarvisInterpreter {
 		environment.put("_booleanAndPrimitive", new BooleanPrimitiveAnd());
 		environment.put("_booleanOrPrimitive", new BooleanPrimitiveOr());
 		environment.put("_booleanNotPrimitive", new BooleanPrimitiveNot());
+		//Partie 2.2 : Ajout de la fonction tricheuse OperatorSetFunction et OperatorNewFunction
+		environment.put("_operatorSetPrimitive", new OperatorSetPrimitive());
+
 
 	}
 
@@ -187,7 +191,7 @@ public class JarvisInterpreter {
 		ListAtom members = new ListAtom();
 		members.add(new StringAtom("attributes"));
 		members.add(new StringAtom("methods"));
-		//Ajout du 3e membre, la super-classe pour l'heritage :
+		//Ajout du 3e membre, la super-classe pour le lien d'heritage :
 		members.add(new StringAtom("superClass"));
 
 		HashMap<String, AbstractAtom> m = new HashMap<String, AbstractAtom>();
@@ -211,7 +215,7 @@ public class JarvisInterpreter {
 
 		data.add(members);
 		data.add(methods);
-		data.add(superClass);
+		data.add(superClass); // Ajout du 3e membre pour instancier le lien d'heritage
 
 		ObjectAtom ClassClass = new ObjectAtom(null, data, this);
 

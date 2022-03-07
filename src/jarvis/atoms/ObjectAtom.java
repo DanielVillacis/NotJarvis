@@ -23,7 +23,7 @@ public class ObjectAtom extends AbstractAtom {
 	 */
 	public static final int ATTRIBUTE_FIELD =0;
 	public static final int METHOD_FIELD =1;
-	public static final int PARENT_FIELD = 2;
+	public static final int SUPER_FIELD = 2;
 	
 	/*
 	 * R�f�rence � la classe de cet objet.
@@ -78,48 +78,57 @@ public class ObjectAtom extends AbstractAtom {
 		
 		
 		//Va chercher les attributs
-		ListAtom members = (ListAtom) classReference.values.get(ATTRIBUTE_FIELD);
+		ListAtom members = classReference.getAllAttributes();
 
 		//V�rifie si c'est un attribut 
 		int pos = members.find(selector);
 		
 		
-		if (pos == -1) {
-			// pas un attribut...
-			// Va chercher les m�thodes
-			DictionnaryAtom methods = (DictionnaryAtom) classReference.values
-					.get(METHOD_FIELD);
-
-			// Cherche dans le dictionnaire
-			AbstractAtom res = methods.get(selector.makeKey());
-
-			// Partie 2 : Interpreter un message et le chercher dans les classes parentes.
-			if (res == null) {
-				ObjectAtom parent = (ObjectAtom) classReference.values.get(PARENT_FIELD);
-				
-				while(parent.values.size() >=2) {
-					methods = (DictionnaryAtom) parent.values.get(METHOD_FIELD);
-					res = methods.get(selector.makeKey());
-					if(res != null) {
-						return res;
-					}
-					parent = (ObjectAtom) parent.values.get(PARENT_FIELD);
-				}
-				
-				// Rien ne correspond au message
-				return new StringAtom("ComprendPas "+ selector);
-			} else {
-				//C'est une m�thode.
-				return res;
-			}
-
-		}
-
-		else {
+		if (pos != -1) {
 			//C'est un attribut.
 			return values.get(pos);
 		}
+		else {	
+			AbstractAtom res = classReference.findMethod(selector);
+			return res;
+		}
 	}
+	
+
+	private ListAtom getAllAttributes() {
+		ListAtom attributs = (ListAtom)values.get(ATTRIBUTE_FIELD);
+		AbstractAtom parent = values.get(SUPER_FIELD);
+		 
+		ListAtom listeAttributs = new ListAtom();
+		
+		if(!(parent instanceof AbstractAtom)) {
+			listeAttributs = ((ObjectAtom) parent).getAllAttributes();
+		}
+		
+		for(int i = 0; i < attributs.size(); i++) {
+			listeAttributs.add(attributs.get(i));
+		}
+		return listeAttributs;
+	}
+
+	
+	private AbstractAtom findMethod(AbstractAtom selector) {
+
+		DictionnaryAtom methods = (DictionnaryAtom) values.get(METHOD_FIELD);
+		AbstractAtom res = methods.get(selector.makeKey());
+		// Super...?
+		if(res == null) {
+			if(values.get(SUPER_FIELD) instanceof NullAtom) {
+				// Rien ne correspond au message
+				return new StringAtom("ComprendPas "+ selector);
+			}
+			else {
+				return((ObjectAtom) values.get(SUPER_FIELD)).findMethod(selector);
+			}
+		}
+		return res;
+	}
+	
 
 	public void setClass(ObjectAtom theClass) {
 		classReference = theClass;
@@ -157,6 +166,14 @@ public class ObjectAtom extends AbstractAtom {
 		
 		return ji.getEnvironment().reverseLookup(classReference);
 		
+	}
+	
+//	public ArrayList<AbstractAtom> getVals(){
+//		return values;
+//	}
+	
+	public void setVal(int valId, AbstractAtom val) {
+		values.set(valId, val);
 	}
 
 }

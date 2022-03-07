@@ -21,7 +21,7 @@ Class
 #Classe servant � faire des conditions
 ("true" "false")
 []
-
+Object
 !(Class new)
 !ref ifelse
 
@@ -29,6 +29,7 @@ Class
 #d�finition incompl�te del a classe int.
 ("value")
 ["+" _integerAddPrimitive "-" _integerSubtractPrimitive "*" _integerMultiplyPrimitive "==" _integerEqualsPrimitive "<" _integerLessPrimitive ">" _integerGreaterPrimitive]
+Object
 !(Class new)
 !ref int
 
@@ -36,6 +37,7 @@ Class
 #d�finition incompl�te de la classe bool.
 ("value")
 ["&&" _booleanAndPrimitive "||" _booleanOrPrimitive "!" _booleanNotPrimitive]
+Object
 !(Class new)
 !ref bool
 
