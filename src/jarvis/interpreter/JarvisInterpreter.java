@@ -15,12 +15,13 @@ import java.util.StringTokenizer;
 import jarvis.atoms.AbstractAtom;
 import jarvis.atoms.CommandAtom;
 import jarvis.atoms.DictionnaryAtom;
+import jarvis.atoms.IntAtom;
 import jarvis.atoms.ListAtom;
 import jarvis.atoms.NullAtom;
 import jarvis.atoms.ObjectAtom;
 import jarvis.atoms.StringAtom;
 import jarvis.atoms.primitives.OperatorNewPrimitive;
-import jarvis.atoms.primitives.OperatorSetPrimitive;
+import jarvis.atoms.primitives.OperatorSetFunction;
 import jarvis.atoms.primitives.booleans.BooleanPrimitiveAnd;
 import jarvis.atoms.primitives.booleans.BooleanPrimitiveNot;
 import jarvis.atoms.primitives.booleans.BooleanPrimitiveOr;
@@ -148,7 +149,7 @@ public class JarvisInterpreter {
 		environment.put("_booleanOrPrimitive", new BooleanPrimitiveOr());
 		environment.put("_booleanNotPrimitive", new BooleanPrimitiveNot());
 		//Partie 2.2 : Ajout de la fonction tricheuse OperatorSetFunction et OperatorNewFunction
-		environment.put("_operatorSetPrimitive", new OperatorSetPrimitive());
+		environment.put("_operatorSetFunction", new OperatorSetFunction());
 
 
 	}
@@ -211,11 +212,10 @@ public class JarvisInterpreter {
 		 * liste des attributs dictionnaire de m�thodes cr��s plus haut.
 		 */
 		ArrayList<AbstractAtom> data = new ArrayList<AbstractAtom>();
-		NullAtom superClass = new NullAtom();
 
 		data.add(members);
 		data.add(methods);
-		data.add(superClass); // Ajout du 3e membre pour instancier le lien d'heritage
+		data.add(new NullAtom()); // Ajout du 3e membre pour instancier le lien d'heritage
 
 		ObjectAtom ClassClass = new ObjectAtom(null, data, this);
 

@@ -4,8 +4,8 @@
 #H�RITAGE: il manque la classe Object.
 # Vous devriez la d�finir ici.
 ()
-[]
-Class
+["set" _operatorSetFunction]
+null
 !(Class new)
 !ref Object
 

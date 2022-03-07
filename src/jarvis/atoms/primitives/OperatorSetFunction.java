@@ -7,7 +7,7 @@ import jarvis.atoms.StringAtom;
 import jarvis.interpreter.JarvisInterpreter;
 
 
-public class OperatorSetPrimitive extends PrimitiveOperationAtom {
+public class OperatorSetFunction extends PrimitiveOperationAtom {
 	
 	// Partie 2.2 : La fonction OperatorSetPrimitive va etre sembable a celle 
 	//				de OperatorNewPrimitive. Elle va heriter les methodes init, 
@@ -35,16 +35,10 @@ public class OperatorSetPrimitive extends PrimitiveOperationAtom {
 	protected AbstractAtom execute(JarvisInterpreter ji,ObjectAtom self) {	
 			
 		
-		//Seule une classe peut faire new. Ramasser de la classe combien d'attributs �a prend.
-		
-//		ArrayList<AbstractAtom> data = self.getVals();
-//		data.set(((ListAtom)self.getJarvisClass().getVals().get(0)).find(ji.getArg()), ji.getArg());
-//					
-//		ObjectAtom res = new ObjectAtom(self, data,ji);		
-		
+		//Seule une classe peut faire new. Ramasser de la classe combien d'attributs �a prend.		
 		StringAtom attribut = (StringAtom) ji.getArg();
 		
-		AbstractAtom val = ji.getArg();
+		AbstractAtom val = (AbstractAtom) ji.getArg();
 		
 		ListAtom parAttr = (ListAtom) self.getJarvisClass().message("attributes");
 		int position = parAttr.find(attribut);
@@ -52,13 +46,12 @@ public class OperatorSetPrimitive extends PrimitiveOperationAtom {
 		
 		self.setVal(position,val);
 			
-		return val;				
+		return self;				
 	}
 	
 	@Override
 	public String makeKey() {
-		
-		return "OperatorSetPrimitive";
+		return "OperatorSetFunction";
 	}
 
 }

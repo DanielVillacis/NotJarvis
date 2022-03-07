@@ -76,7 +76,6 @@ public class ObjectAtom extends AbstractAtom {
 	 */	
 	public AbstractAtom message(AbstractAtom selector) {
 		
-		
 		//Va chercher les attributs
 		ListAtom members = classReference.getAllAttributes();
 
@@ -90,15 +89,19 @@ public class ObjectAtom extends AbstractAtom {
 		}
 		else {	
 			AbstractAtom res = classReference.findMethod(selector);
+			if(res == null) {
+				// Rien ne correspond au message
+				return new StringAtom("ComprendPas "+ selector);
+			}
 			return res;
 		}
 	}
 	
 
-	private ListAtom getAllAttributes() {
-		ListAtom attributs = (ListAtom)values.get(ATTRIBUTE_FIELD);
+	private ListAtom getAllAttributes() {		
+		ListAtom attributs = (ListAtom) values.get(ATTRIBUTE_FIELD);
 		AbstractAtom parent = values.get(SUPER_FIELD);
-		 
+		
 		ListAtom listeAttributs = new ListAtom();
 		
 		if(!(parent instanceof AbstractAtom)) {
@@ -107,9 +110,10 @@ public class ObjectAtom extends AbstractAtom {
 		
 		for(int i = 0; i < attributs.size(); i++) {
 			listeAttributs.add(attributs.get(i));
-		}
+		}	
 		return listeAttributs;
 	}
+	
 
 	
 	private AbstractAtom findMethod(AbstractAtom selector) {
@@ -117,13 +121,14 @@ public class ObjectAtom extends AbstractAtom {
 		DictionnaryAtom methods = (DictionnaryAtom) values.get(METHOD_FIELD);
 		AbstractAtom res = methods.get(selector.makeKey());
 		// Super...?
+
 		if(res == null) {
 			if(values.get(SUPER_FIELD) instanceof NullAtom) {
 				// Rien ne correspond au message
 				return new StringAtom("ComprendPas "+ selector);
 			}
 			else {
-				return((ObjectAtom) values.get(SUPER_FIELD)).findMethod(selector);
+				return ((ObjectAtom)values.get(SUPER_FIELD)).findMethod(selector);
 			}
 		}
 		return res;
@@ -168,12 +173,9 @@ public class ObjectAtom extends AbstractAtom {
 		
 	}
 	
-//	public ArrayList<AbstractAtom> getVals(){
-//		return values;
-//	}
 	
-	public void setVal(int valId, AbstractAtom val) {
-		values.set(valId, val);
+	public void setVal(int pos, AbstractAtom val) {
+		values.set(pos, val);
 	}
 
 }
